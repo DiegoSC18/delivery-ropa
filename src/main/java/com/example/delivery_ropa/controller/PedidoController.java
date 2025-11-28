@@ -39,7 +39,7 @@ public class PedidoController {
     }
 
     //Obtener pedidos por Cliente
-    @GetMapping("/cliente/{clienteId")
+    @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<Pedido>> obtenerPorCliente(@PathVariable Long clienteId){
         return ResponseEntity.ok(pedidoService.obtenerPorCliente(clienteId));
     }
