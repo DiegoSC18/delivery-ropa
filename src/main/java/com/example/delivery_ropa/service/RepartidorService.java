@@ -26,7 +26,35 @@ public class RepartidorService {
 
         //Buscamos repartidor
         Repartidor repartidor = repartidorRepository.findById(repartidorId)
-                .orElseThrow(() -> new RuntimeException("Repartidor no encontrado con id: "+repartidorId));
+                .orElseThrow(() -> new RuntimeException("Repartidor no encontrado con id: " + repartidorId));
+
+        //Verificar que el repartidor esté DISPONIBLE
+        if (repartidor.getEstado() != EstadoRepartidor.DISPONIBLE) {
+            throw new RuntimeException(
+                    "El repartidor " + repartidor.getNombre() + " " + repartidor.getApellido() +
+                            " no está disponible. Estado actual: " + repartidor.getEstado()
+            );
+        }
+
+        //Buscar pedido
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado con id: " + pedidoId));
+
+        //Asignar pedido al repartidor
+        repartidor.setPedido(pedido);
+        repartidor.setEstado(EstadoRepartidor.OCUPADO);
+
+        //Cambiar estado del pedido a EN_CAMINO
+        pedido.setEstado(EstadoPedido.EN_CAMINO);
+        pedidoRepository.save(pedido);
+
+        return repartidorRepository.save(repartidor);
+    }
+
+    //Liberar repartidor después de entregar
+    public Repartidor liberarRepartidor(Long repartidorId){
+        Repartidor repartidor = repartidorRepository.findById(repartidorId)
+                .orElseThrow(() -> new RuntimeException("Repartidor no encontrado con id: " +repartidorId));
 
         //Liberamos el Pedido
         if (repartidor.getPedido() !=null) {
