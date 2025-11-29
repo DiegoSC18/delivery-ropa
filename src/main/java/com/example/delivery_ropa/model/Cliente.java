@@ -1,5 +1,6 @@
 package com.example.delivery_ropa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Cliente {
     private LocalDate fechaRegistro;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Pedido> pedidos;
 
     public Cliente() {

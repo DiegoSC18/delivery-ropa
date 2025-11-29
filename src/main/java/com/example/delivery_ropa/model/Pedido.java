@@ -1,5 +1,6 @@
 package com.example.delivery_ropa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,9 +35,11 @@ public class Pedido {
     private String metodoPago;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<DetallePedido> detalles;
 
     @OneToOne(mappedBy = "pedido")
+    @JsonIgnore
     private Repartidor repartidor;
 
     public Pedido() {

@@ -1,5 +1,6 @@
 package com.example.delivery_ropa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,6 +38,7 @@ public class Producto {
     private String marca;
 
     @OneToMany(mappedBy = "producto")
+    @JsonIgnore
     private List<DetallePedido> detallesPedido;
 
     public Producto() {
