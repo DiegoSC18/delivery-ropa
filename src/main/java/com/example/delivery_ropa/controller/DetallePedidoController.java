@@ -1,12 +1,18 @@
 package com.example.delivery_ropa.controller;
 
 import com.example.delivery_ropa.model.DetallePedido;
+import com.example.delivery_ropa.model.Pedido;
+import com.example.delivery_ropa.model.Producto;
 import com.example.delivery_ropa.service.DetallePedidoService;
+import com.example.delivery_ropa.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/detalles-pedido")
@@ -15,6 +21,28 @@ public class DetallePedidoController {
     @Autowired
     private DetallePedidoService detallePedidoService;
 
+    @Autowired
+    private ProductoService productoService;
+
+    @PostMapping
+    public ResponseEntity<?> crear(@RequestBody Map<String, Object> request){
+        try {
+            Long pedidoId = Long.valueOf(request.get("pedidoId").toString());
+            Long productoId = Long.valueOf(request.get("productoId").toString());
+            Integer cantidad = Integer.valueOf(request.get("cantidad").toString());
+
+            Pedido pedido = new Pedido();
+            pedido.setId(pedidoId);
+
+            Producto producto = productoService.obtenerPorId(productoId)
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+            DetallePedido detalle = detallePedidoService.crearDetalle(pedido, producto, cantidad);
+            return ResponseEntity.status(HttpStatus.CREATED).body(detalle);
+        }catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
     //Obtener todos los detalles
     @GetMapping
     public ResponseEntity<List<DetallePedido>> obtenerTodos() {
