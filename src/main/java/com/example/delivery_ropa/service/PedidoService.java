@@ -1,8 +1,10 @@
 package com.example.delivery_ropa.service;
 
+import com.example.delivery_ropa.model.Cliente;
 import com.example.delivery_ropa.model.DetallePedido;
 import com.example.delivery_ropa.model.Pedido;
 import com.example.delivery_ropa.model.Pedido.EstadoPedido;
+import com.example.delivery_ropa.repository.ClienteRepository;
 import com.example.delivery_ropa.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     //REGLA DE NEGOCIO 3: CALCULAR TOTAL AUTOMÁTICAMENTE
     public BigDecimal calcularTotal(Pedido pedido){
         if (pedido.getDetalles() == null || pedido.getDetalles().isEmpty()) {
@@ -28,6 +33,13 @@ public class PedidoService {
     }
 
     public Pedido crarPedido(Pedido pedido) {
+
+        //Buscar el cliente completo por ID
+        if (pedido.getCliente() !=null && pedido.getCliente().getId() != null){
+            Cliente clienteCompleto = clienteRepository.findById(pedido.getCliente().getId())
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado con id: " +pedido.getCliente().getId()));
+            pedido.setCliente(clienteCompleto);
+        }
         //Calculamos y asignamos el total Automáticamente
         BigDecimal total = calcularTotal(pedido);
         pedido.setTotal(total);
