@@ -71,6 +71,10 @@ public class RepartidorService {
 
     //Métodos CRUD básicos
     public Repartidor crear(Repartidor repartidor) {
+
+        if (repartidorRepository.existsByPlaca(repartidor.getPlaca())){
+            throw new RuntimeException("Ya existe un repartidor con la placa: " +repartidor.getPlaca());
+        }
         return repartidorRepository.save(repartidor);
     }
 
