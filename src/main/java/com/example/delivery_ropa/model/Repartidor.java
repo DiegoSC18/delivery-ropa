@@ -22,7 +22,7 @@ public class Repartidor {
     @Column(nullable = false, length = 30)
     private String vehiculo;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String placa;
 
     @Column(nullable = false, length = 20)
