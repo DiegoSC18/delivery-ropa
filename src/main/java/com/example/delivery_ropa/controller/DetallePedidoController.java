@@ -8,7 +8,6 @@ import com.example.delivery_ropa.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,8 +64,8 @@ public class DetallePedidoController {
 
     //Obtener detalles de un producto
     @GetMapping("/producto/{productoId}")
-    public ResponseEntity<List<DetallePedido>> obtenerPorProducto(@PathVariable Long prodcutoId){
-        return ResponseEntity.ok(detallePedidoService.obtenerPorProducto(prodcutoId));
+    public ResponseEntity<List<DetallePedido>> obtenerPorProducto(@PathVariable Long productoId){
+        return ResponseEntity.ok(detallePedidoService.obtenerPorProducto(productoId));
     }
 
     //Eliminar detalle
@@ -76,7 +75,7 @@ public class DetallePedidoController {
             detallePedidoService.eliminar(id);
             return ResponseEntity.ok("Detalle eliminado exitosamente");
         }catch (RuntimeException e){
-            return ResponseEntity.status(404).body(e.getMessage());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }

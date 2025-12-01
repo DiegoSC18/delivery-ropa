@@ -18,8 +18,18 @@ public class ProductoService {
 
     public void validarYReducirStock(Long productoId, Integer cantidad) {
         Producto producto = productoRepository.findById(productoId)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " +productoId));
-        producto.setStock(producto.getStock() + cantidad);
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + productoId));
+
+        //Validar que haya stock suficiente
+        if (producto.getStock() < cantidad){
+            throw new RuntimeException(
+                    "Stock insuficiente para el producto con id: " + productoId +
+                    ". Stock actual: " + producto.getStock() +
+                    ", cantidad solicitada: " +cantidad
+            );
+        }
+
+        producto.setStock(producto.getStock() - cantidad);
         productoRepository.save(producto);
     }
 

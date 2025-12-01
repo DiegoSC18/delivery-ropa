@@ -45,7 +45,7 @@ public class RepartidorController {
     }
 
     //Obtener repartidores por estado
-    @GetMapping("/estado{estado}")
+    @GetMapping("/estado/{estado}")
     public ResponseEntity<List<Repartidor>> obtenerPorEstado(@PathVariable EstadoRepartidor estado){
         return ResponseEntity.ok(repartidorService.obtenerPorEstado(estado));
     }
