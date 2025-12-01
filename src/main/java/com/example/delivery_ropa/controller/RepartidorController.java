@@ -19,9 +19,13 @@ public class RepartidorController {
 
     //Crear repartidor
     @PostMapping
-    public ResponseEntity<Repartidor> crear(@RequestBody Repartidor repartidor){
-        Repartidor nuevoRepartidor = repartidorService.crear(repartidor);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoRepartidor);
+    public ResponseEntity<?> crear(@RequestBody Repartidor repartidor){
+        try {
+            Repartidor nuevoRepartidor = repartidorService.crear(repartidor);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoRepartidor);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     //Obtener todos los repartidores
