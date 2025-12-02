@@ -16,13 +16,13 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonIgnore
     private Cliente cliente;
 
     @Column(name = "fecha_pedido", nullable = false)
     private LocalDateTime fechaPedido;
 
     @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -35,11 +35,9 @@ public class Pedido {
     private String metodoPago;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<DetallePedido> detalles;
 
     @OneToOne(mappedBy = "pedido")
-    @JsonIgnore
     private Repartidor repartidor;
 
     public Pedido() {

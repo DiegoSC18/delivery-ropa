@@ -1,5 +1,6 @@
 package com.example.delivery_ropa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -26,11 +27,11 @@ public class Repartidor {
     private String placa;
 
     @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
     private EstadoRepartidor estado;
 
     @OneToOne
     @JoinColumn(name = "pedido_id")
+    @JsonIgnore
     private Pedido pedido;
 
     public Repartidor() {

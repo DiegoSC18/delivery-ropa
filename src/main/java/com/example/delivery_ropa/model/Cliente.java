@@ -32,7 +32,6 @@ public class Cliente {
     private LocalDate fechaRegistro;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Pedido> pedidos;
 
     public Cliente() {
